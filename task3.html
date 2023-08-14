@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do App</title>
+    <style>
+        /* CSS styles for the app */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .task-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .completed-task {
+            text-decoration: line-through;
+            color: gray;
+        }
+        
+        .add-task-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .add-task-form input[type="text"] {
+            flex-grow: 1;
+            padding: 5px;
+        }
+        
+        .add-task-form button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .delete-task {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do App</h1>
+        
+        <div class="add-task-form">
+            <input type="text" id="task-input" placeholder="Enter a new task">
+            <button id="add-task-btn">Add Task</button>
+        </div>
+        
+        <h2>Pending Tasks</h2>
+        <ul id="pending-tasks" class="task-list">
+            <!-- Pending tasks will be dynamically added here -->
+        </ul>
+        
+        <h2>Completed Tasks</h2>
+        <ul id="completed-tasks" class="task-list">
+            <!-- Completed tasks will be dynamically added here -->
+        </ul>
+    </div>
+
+    <script>
+        // JavaScript code for the app
+        const taskInput = document.getElementById('task-input');
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const pendingTasksList = document.getElementById('pending-tasks');
+        const completedTasksList = document.getElementById('completed-tasks');
+        
+        addTaskBtn.addEventListener('click', function() {
+            const taskText = taskInput.value;
+            
+            if (taskText.trim() !== '') {
+                const taskItem = document.createElement('li');
+                const taskCheckbox = document.createElement('input');
+                const taskLabel = document.createElement('label');
+                const deleteButton = document.createElement('span');
+                
+                taskCheckbox.type = 'checkbox';
+                taskLabel.textContent = taskText;
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete-task';
+                
+                taskItem.appendChild(taskCheckbox);
+                taskItem.appendChild(taskLabel);
+                taskItem.appendChild(deleteButton);
+                
+                pendingTasksList.appendChild(taskItem);
+                
+                taskInput.value = '';
+            }
+        });
+        
+        pendingTasksList.addEventListener('change', function(event) {
+            const taskItem = event.target.parentNode;
+            
+            if (event.target.checked) {
+                taskItem.classList.add('completed-task');
+                completedTasksList.appendChild(taskItem);
+            } else {
+                taskItem.classList.remove('completed-task');
+                pendingTasksList.appendChild(taskItem);
+            }
+        });
+        
+        pendingTasksList.addEventListener('click', function(event) {
+            if (event.target.classList.contains('delete-task')) {
+                const taskItem = event.target.parentNode;
+                taskItem.remove();
+            }
+        });
+        
+        completedTasksList.addEventListener('click', function(event) {
+            if (event.target.classList.contains('delete-task')) {
+                const taskItem = event.target.parentNode;
+                taskItem.remove();
+            }
+        });
+    </script>
+</body>
+</html>
